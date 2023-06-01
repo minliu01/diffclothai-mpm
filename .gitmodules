@@ -1,0 +1,16 @@
+[submodule "external/eigen"]
+	path = external/eigen
+	url = https://gitlab.com/libeigen/eigen.git
+[submodule "external/pybind11"]
+	path = external/pybind11
+	url = https://github.com/pybind/pybind11.git
+[submodule "Tight-Inclusion"]
+	path = external/Tight-Inclusion
+	url = git@github.com:Continuous-Collision-Detection/Tight-Inclusion.git
+[submodule "external/fcl"]
+	path = external/fcl
+	url = git@github.com:flexible-collision-library/fcl.git
+[submodule "external/openvdb"]
+	path = external/openvdb
+	url = git@github.com:AcademySoftwareFoundation/openvdb.git
+	branch = v8.2

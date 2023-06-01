@@ -1,0 +1,125 @@
+Epoch 0
+[Epoch 0] loss:1.19432  minLoss:1.19432  bestEpoch:0
+Epoch 1
+[Epoch 1] loss:1.18604  minLoss:1.18604  bestEpoch:1
+Epoch 2
+[Epoch 2] loss:1.17173  minLoss:1.17173  bestEpoch:2
+Epoch 3
+[Epoch 3] loss:1.15384  minLoss:1.15384  bestEpoch:3
+Epoch 4
+[Epoch 4] loss:1.13481  minLoss:1.13481  bestEpoch:4
+Epoch 5
+[Epoch 5] loss:1.11030  minLoss:1.11030  bestEpoch:5
+Epoch 6
+[Epoch 6] loss:1.08157  minLoss:1.08157  bestEpoch:6
+Epoch 7
+[Epoch 7] loss:1.05505  minLoss:1.05505  bestEpoch:7
+Epoch 8
+[Epoch 8] loss:1.02915  minLoss:1.02915  bestEpoch:8
+Epoch 9
+[Epoch 9] loss:1.00576  minLoss:1.00576  bestEpoch:9
+Epoch 10
+[Epoch 10] loss:0.98225  minLoss:0.98225  bestEpoch:10
+Epoch 11
+[Epoch 11] loss:0.95962  minLoss:0.95962  bestEpoch:11
+Epoch 12
+[Epoch 12] loss:0.93695  minLoss:0.93695  bestEpoch:12
+Epoch 13
+[Epoch 13] loss:0.91472  minLoss:0.91472  bestEpoch:13
+Epoch 14
+[Epoch 14] loss:0.89286  minLoss:0.89286  bestEpoch:14
+Epoch 15
+[Epoch 15] loss:0.87030  minLoss:0.87030  bestEpoch:15
+Epoch 16
+[Epoch 16] loss:0.84976  minLoss:0.84976  bestEpoch:16
+Epoch 17
+[Epoch 17] loss:0.82691  minLoss:0.82691  bestEpoch:17
+Epoch 18
+[Epoch 18] loss:0.82756  minLoss:0.82691  bestEpoch:17
+Epoch 19
+[Epoch 19] loss:0.78335  minLoss:0.78335  bestEpoch:19
+Epoch 20
+[Epoch 20] loss:0.76404  minLoss:0.76404  bestEpoch:20
+Epoch 21
+[Epoch 21] loss:0.80036  minLoss:0.76404  bestEpoch:20
+Epoch 22
+[Epoch 22] loss:0.77907  minLoss:0.76404  bestEpoch:20
+Epoch 23
+[Epoch 23] loss:0.85322  minLoss:0.76404  bestEpoch:20
+Epoch 24
+[Epoch 24] loss:0.73845  minLoss:0.73845  bestEpoch:24
+Epoch 25
+[Epoch 25] loss:0.72449  minLoss:0.72449  bestEpoch:25
+Epoch 26
+[Epoch 26] loss:0.70574  minLoss:0.70574  bestEpoch:26
+Epoch 27
+[Epoch 27] loss:0.67140  minLoss:0.67140  bestEpoch:27
+Epoch 28
+[Epoch 28] loss:0.63807  minLoss:0.63807  bestEpoch:28
+Epoch 29
+[Epoch 29] loss:0.61948  minLoss:0.61948  bestEpoch:29
+Epoch 30
+[Epoch 30] loss:0.62682  minLoss:0.61948  bestEpoch:29
+Epoch 31
+[Epoch 31] loss:0.61893  minLoss:0.61893  bestEpoch:31
+Epoch 32
+[Epoch 32] loss:0.60397  minLoss:0.60397  bestEpoch:32
+Epoch 33
+[Epoch 33] loss:0.58830  minLoss:0.58830  bestEpoch:33
+Epoch 34
+[Epoch 34] loss:0.57293  minLoss:0.57293  bestEpoch:34
+Epoch 35
+[Epoch 35] loss:0.55811  minLoss:0.55811  bestEpoch:35
+Epoch 36
+[Epoch 36] loss:0.54751  minLoss:0.54751  bestEpoch:36
+Epoch 37
+[Epoch 37] loss:0.54070  minLoss:0.54070  bestEpoch:37
+Epoch 38
+[Epoch 38] loss:0.53487  minLoss:0.53487  bestEpoch:38
+Epoch 39
+[Epoch 39] loss:0.52749  minLoss:0.52749  bestEpoch:39
+Epoch 40
+[Epoch 40] loss:0.51745  minLoss:0.51745  bestEpoch:40
+Epoch 41
+[Epoch 41] loss:0.50462  minLoss:0.50462  bestEpoch:41
+Epoch 42
+[Epoch 42] loss:0.49137  minLoss:0.49137  bestEpoch:42
+Epoch 43
+[Epoch 43] loss:0.47731  minLoss:0.47731  bestEpoch:43
+Epoch 44
+[Epoch 44] loss:0.46257  minLoss:0.46257  bestEpoch:44
+Epoch 45
+[Epoch 45] loss:0.44691  minLoss:0.44691  bestEpoch:45
+Epoch 46
+[Epoch 46] loss:0.43083  minLoss:0.43083  bestEpoch:46
+Epoch 47
+[Epoch 47] loss:0.41327  minLoss:0.41327  bestEpoch:47
+Epoch 48
+[Epoch 48] loss:0.39334  minLoss:0.39334  bestEpoch:48
+Epoch 49
+[Epoch 49] loss:0.37259  minLoss:0.37259  bestEpoch:49
+Epoch 50
+[Epoch 50] loss:0.35237  minLoss:0.35237  bestEpoch:50
+Epoch 51
+[Epoch 51] loss:0.33185  minLoss:0.33185  bestEpoch:51
+Epoch 52
+[Epoch 52] loss:0.30563  minLoss:0.30563  bestEpoch:52
+Epoch 53
+[Epoch 53] loss:0.28219  minLoss:0.28219  bestEpoch:53
+Epoch 54
+[Epoch 54] loss:0.26310  minLoss:0.26310  bestEpoch:54
+Epoch 55
+[Epoch 55] loss:0.24661  minLoss:0.24661  bestEpoch:55
+Epoch 56
+[Epoch 56] loss:0.22856  minLoss:0.22856  bestEpoch:56
+Epoch 57
+[Epoch 57] loss:0.20853  minLoss:0.20853  bestEpoch:57
+Epoch 58
+[Epoch 58] loss:0.18752  minLoss:0.18752  bestEpoch:58
+Epoch 59
+[Epoch 59] loss:0.16642  minLoss:0.16642  bestEpoch:59
+Epoch 60
+[Epoch 60] loss:0.14560  minLoss:0.14560  bestEpoch:60
+Epoch 61
+[Epoch 61] loss:0.12555  minLoss:0.12555  bestEpoch:61
+Epoch 62

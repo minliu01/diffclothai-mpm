@@ -1,0 +1,3 @@
+Epoch 0
+[Epoch 0] loss:4.53929  minLoss:4.53929  bestEpoch:0
+Epoch 1

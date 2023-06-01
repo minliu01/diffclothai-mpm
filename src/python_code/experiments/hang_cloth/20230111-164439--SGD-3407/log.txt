@@ -1,0 +1,13 @@
+Epoch 0
+[Epoch 0] loss:4.53929  minLoss:4.53929  bestEpoch:0
+Epoch 1
+[Epoch 1] loss:4.38357  minLoss:4.38357  bestEpoch:1
+Epoch 2
+[Epoch 2] loss:4.12458  minLoss:4.12458  bestEpoch:2
+Epoch 3
+[Epoch 3] loss:3.80257  minLoss:3.80257  bestEpoch:3
+Epoch 4
+[Epoch 4] loss:3.45282  minLoss:3.45282  bestEpoch:4
+Epoch 5
+[Epoch 5] loss:3.08551  minLoss:3.08551  bestEpoch:5
+Epoch 6

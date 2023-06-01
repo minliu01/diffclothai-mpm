@@ -1,0 +1,35 @@
+Epoch 0
+[Epoch 0] loss:0.03336  minLoss:0.03336  bestEpoch:0
+Epoch 1
+[Epoch 1] loss:0.02968  minLoss:0.02968  bestEpoch:1
+Epoch 2
+[Epoch 2] loss:0.02425  minLoss:0.02425  bestEpoch:2
+Epoch 3
+[Epoch 3] loss:0.01911  minLoss:0.01911  bestEpoch:3
+Epoch 4
+[Epoch 4] loss:0.01418  minLoss:0.01418  bestEpoch:4
+Epoch 5
+[Epoch 5] loss:0.00984  minLoss:0.00984  bestEpoch:5
+Epoch 6
+[Epoch 6] loss:0.00690  minLoss:0.00690  bestEpoch:6
+Epoch 7
+[Epoch 7] loss:0.00520  minLoss:0.00520  bestEpoch:7
+Epoch 8
+[Epoch 8] loss:0.00415  minLoss:0.00415  bestEpoch:8
+Epoch 9
+[Epoch 9] loss:0.00353  minLoss:0.00353  bestEpoch:9
+Epoch 10
+[Epoch 10] loss:0.00312  minLoss:0.00312  bestEpoch:10
+Epoch 11
+[Epoch 11] loss:0.00281  minLoss:0.00281  bestEpoch:11
+Epoch 12
+[Epoch 12] loss:0.00259  minLoss:0.00259  bestEpoch:12
+Epoch 13
+[Epoch 13] loss:0.00245  minLoss:0.00245  bestEpoch:13
+Epoch 14
+[Epoch 14] loss:0.00226  minLoss:0.00226  bestEpoch:14
+Epoch 15
+[Epoch 15] loss:0.00196  minLoss:0.00196  bestEpoch:15
+Epoch 16
+[Epoch 16] loss:0.00136  minLoss:0.00136  bestEpoch:16
+Epoch 17

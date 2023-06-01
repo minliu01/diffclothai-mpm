@@ -1,0 +1,2 @@
+randSeed: 3407
+optimizer: SGD

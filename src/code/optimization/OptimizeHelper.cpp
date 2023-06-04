@@ -154,7 +154,6 @@ void OptimizeHelper::setParameterBounds(Simulation::BackwardTaskInformation &tas
     }
   }
 
-
   paramLowerBound = VecXd(totalParamNumber);
   paramLowerBound.setZero();
   paramUpperBound = VecXd(totalParamNumber);

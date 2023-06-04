@@ -87,6 +87,7 @@ static std::vector<std::string> DEMOS_STRINGS = std::vector<std::string>{
         "DEMO_DRESS_TWIRL0.3",
         "SPHERE", //19
         "CLOTH_HANGER",
+        "MPM_CLOTH",
 };
 
 enum PrimitiveConfiguration {
@@ -98,7 +99,8 @@ enum PrimitiveConfiguration {
     NONE,
     Y0PLANE,
     BIG_SPHERE,
-    CLOTH_HANGER
+    CLOTH_HANGER,
+    NONE
 };
 
 
@@ -124,7 +126,8 @@ enum FabricEnumArray {
 };
 
 enum SceneConfigArray {
-    SCENE_WIND, SCENE_CONTINUOUS_NORMAL, SCENE_NAPKIN, SCENE_ROTATING_SPHERE, SCENE_DEMO_HAT, SCENE_DEMO_SOCK, SCENE_DEMO_SLOE, SCENE_DEMO_TSHIRT, SCENE_DEMO_DRESS, SCENE_NONE
+    SCENE_WIND, SCENE_CONTINUOUS_NORMAL, SCENE_NAPKIN, SCENE_ROTATING_SPHERE, SCENE_DEMO_HAT, 
+    SCENE_DEMO_SOCK, SCENE_DEMO_SLOE, SCENE_DEMO_TSHIRT, SCENE_DEMO_DRESS, SCENE_NONE
 };
 
 static std::vector<std::string> SCENE_CONFIG_STRINGS = std::vector<std::string>{

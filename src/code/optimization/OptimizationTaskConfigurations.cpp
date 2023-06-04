@@ -7,6 +7,8 @@
 
 // For structs that contain other static initialized structs as members, make sure you
 // initize the structs in order
+
+/* Fabric Configuration */
 Simulation::FabricConfiguration  OptimizationTaskConfigurations::normalFabric6lowres = {
         .clothDimX = 6,
         .clothDimY = 6,
@@ -39,8 +41,6 @@ Simulation::FabricConfiguration  OptimizationTaskConfigurations::normalFabric6 =
         .color = COLOR_EGGPLANT,
         .name = "dim6x6-grid25x25-dens0.32-k50",
 };
-
-
 
 Simulation::FabricConfiguration  OptimizationTaskConfigurations::conitnuousNormalTestFabric = {
         .clothDimX = 4,
@@ -157,7 +157,6 @@ Simulation::FabricConfiguration  OptimizationTaskConfigurations::dressv7khandsUp
         .name =  "remeshed/dress-handsup-drape.obj",
 };
 
-
 Simulation::FabricConfiguration OptimizationTaskConfigurations::agenthat579 = {
         .clothDimX = 6,
         .clothDimY = 6,
@@ -192,8 +191,7 @@ Simulation::FabricConfiguration OptimizationTaskConfigurations::sock482 = {
 };
 
 
-// SceneConfiguration
-
+/* Scene Configuration */
 Simulation::SceneConfiguration OptimizationTaskConfigurations::hatScene = {
         .fabric = agenthat579,
         .orientation =  Orientation::FRONT,
@@ -212,7 +210,6 @@ Simulation::SceneConfiguration OptimizationTaskConfigurations::hatScene = {
         .name = "demo_wearhat"
 
 };
-
 
 Simulation::SceneConfiguration OptimizationTaskConfigurations::continousNormalScene = {
         .fabric = conitnuousNormalTestFabric,
@@ -233,7 +230,6 @@ Simulation::SceneConfiguration OptimizationTaskConfigurations::continousNormalSc
 
 };
 
-
 Simulation::SceneConfiguration OptimizationTaskConfigurations::simpleScene = {
         .fabric = normalFabric6lowres, //normalFabric6,
         .orientation = Orientation::FRONT,
@@ -252,8 +248,6 @@ Simulation::SceneConfiguration OptimizationTaskConfigurations::simpleScene = {
 
 };
 
-
-
 Simulation::SceneConfiguration OptimizationTaskConfigurations::rotatingSphereScene = {
         .fabric = sphereFabric,
         .orientation = Orientation::DOWN,
@@ -271,8 +265,6 @@ Simulation::SceneConfiguration OptimizationTaskConfigurations::rotatingSphereSce
         .name = "rotating_sphere"
 
 };
-
-
 
 Simulation::SceneConfiguration OptimizationTaskConfigurations::windScene = {
         .fabric = normalFabric6,
@@ -337,7 +329,6 @@ Simulation::SceneConfiguration OptimizationTaskConfigurations::dressScene = {
 
 };
 
-
 Simulation::SceneConfiguration OptimizationTaskConfigurations::slopeSimplifiedScene{ // solution mu: 0-0.8
         .fabric =  slopeFabricRestOnPlane,
         .orientation = Orientation::FRONT,
@@ -357,7 +348,6 @@ Simulation::SceneConfiguration OptimizationTaskConfigurations::slopeSimplifiedSc
         .name = "slope_simplified"
 };
 
-
 Simulation::SceneConfiguration OptimizationTaskConfigurations::sockScene{ // sockLegUp is Vec3d(0, 1, 0)
         .fabric =  sock482,
         .orientation = Orientation::CUSTOM_ORIENTATION,
@@ -376,7 +366,6 @@ Simulation::SceneConfiguration OptimizationTaskConfigurations::sockScene{ // soc
         .backwardConvergenceThresh = 5e-4,
         .name = "wear_sock1"
 };
-
 
 Simulation::SceneConfiguration OptimizationTaskConfigurations::hangerScene{
         .fabric = tie,
@@ -414,8 +403,7 @@ Simulation::SceneConfiguration OptimizationTaskConfigurations::towelScene{
         .name = "hang_cloth"
 };
 
-// TaskConfiguration
-
+/* Task Configuration */
 Simulation::TaskConfiguration OptimizationTaskConfigurations::demoWindSim2Real = {
         .scene = windScene,
         .hasGroundtruth = true,

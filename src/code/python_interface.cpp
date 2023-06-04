@@ -99,8 +99,6 @@ Simulation* makeSim(std::string exampleName, bool runBackward = true) {
   return sim;
 }
 
-
-
 OptimizeHelper* makeOptimizeHelperWithSim(std::string exampleName, Simulation* sim) {
   Simulation::forwardConvergenceThreshold = 1e-5;
   OptimizeHelper* helper = nullptr;
@@ -154,7 +152,6 @@ OptimizeHelper* makeOptimizeHelper(std::string exampleName) {
   return makeOptimizeHelperWithSim(exampleName, sim);
 }
 
-
 void enableOpenMP(int n_threads = 5) {
   bool parallelizeEigen = true;
 
@@ -174,7 +171,6 @@ void render(Simulation* sim, bool renderPosPairs = false, bool autoExit = false)
 }
 
 PYBIND11_MODULE(diffcloth_py, m) {
-
   // Primitive
   py::enum_<WindConfig>(m, "WindConfig")
           .value("NO_WIND", WindConfig::NO_WIND)
@@ -183,7 +179,6 @@ PYBIND11_MODULE(diffcloth_py, m) {
           .value("WIND_SIN_AND_FALLOFF", WindConfig::WIND_SIN_AND_FALLOFF)
           .value("WIND_FACTOR_PER_STEP", WindConfig::WIND_FACTOR_PER_STEP)
           .export_values();
-
 
   // Simulation::SceneConfiguration
   py::class_<Simulation::SceneConfiguration>(m, "SceneConfiguration")

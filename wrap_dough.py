@@ -268,17 +268,13 @@ def wrap(args, out_fn):
             renormalize=True,
             dir_prefix=f"output/{args.output_dir}",
         )
-    del sim, pysim
-
 
 # TODO 1: adding randomized texture ?
 # TODO 2: is stablizing the scene necessary ?
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("Perturb flat cloth")
     parser.add_argument(
-        "-mode",
-        type=int,
-        default=1,
+        "-mode", type=int, default=1,
         help="-1: no change, 0: random perturb, 1: bezier purturb",
     )
     parser.add_argument("--render", "-r", action="store_true")

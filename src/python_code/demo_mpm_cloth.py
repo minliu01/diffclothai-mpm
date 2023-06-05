@@ -22,7 +22,7 @@ sceneConfig = {
     "forwardConvergenceThresh": "1e-8",
     "backwardConvergenceThresh": "5e-4",
     "attachmentPoints": "CUSTOM_ARRAY",
-    "customAttachmentVertexIdx": "0,11,132,143",
+    "customAttachmentVertexIdx": "0,11",
     # "orientation": "CUSTOM_ORIENTATION",
     # "upVector": "0,0,1",
 }
@@ -106,10 +106,8 @@ def wrap(args):
     control_idx = sim.sceneConfig.customAttachmentVertexIdx[0][1]
     control_x0_t = [x0_t.reshape(-1, 3)[idx] for idx in control_idx]
     control_tgt = sum(control_x0_t)
-    control_tgt[1] += 2 + 3
+    control_tgt[1] += 2
     control_tgt = torch.cat([control_tgt] * len(control_idx))
-    control_tgt[6:9] = x0_t.reshape(-1, 3)[132]
-    control_tgt[9:12] = x0_t.reshape(-1, 3)[143]
     _ = forward_sim_targeted_control(x0_t, v0_t, a0_t, control_tgt, pysim, 200)
     # _ = forward_sim_no_control(x0_t, v0_t, a0_t, pysim, 200)
 

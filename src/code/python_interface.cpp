@@ -112,6 +112,9 @@ OptimizeHelper* makeOptimizeHelperWithSim(std::string exampleName, Simulation* s
   } else if (exampleName == "tie") {
     sim->setPrintVerbose(false);
     helper = BackwardTaskSolver::getOptimizeHelperPointer(sim, Demos::DEMO_CLOTH_HANGER);
+  } else if (exampleName == "mpm_cloth") {
+    sim->setPrintVerbose(false);
+    helper = BackwardTaskSolver::getOptimizeHelperPointer(sim, Demos::DEMO_MPM_CLOTH);
   } else if (exampleName == "wear_sock") {
     sim->setPrintVerbose(false);
     helper = BackwardTaskSolver::getOptimizeHelperPointer(sim, Demos::DEMO_WEAR_SOCK);

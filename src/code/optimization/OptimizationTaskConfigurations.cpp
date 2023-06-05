@@ -469,6 +469,12 @@ Simulation::TaskConfiguration OptimizationTaskConfigurations::demoHanger = {
         .lossType = LossType::MATCHSHAPE_WITH_TRANSLATION  // TODO：confirm this param
 };
 
+Simulation::TaskConfiguration OptimizationTaskConfigurations::demoMPMCloth = {
+        .scene = towelScene,
+        .hasGroundtruth = false,
+        .generateGroundtruthSimulation = false,
+        .lossType = LossType::MATCHSHAPE_WITH_TRANSLATION  // TODO：confirm this param
+};
 
 std::map<int, Simulation::TaskConfiguration> OptimizationTaskConfigurations::demoNumToConfigMap = {
         {DEMO_WIND,          OptimizationTaskConfigurations::demoWInd},
@@ -479,7 +485,8 @@ std::map<int, Simulation::TaskConfiguration> OptimizationTaskConfigurations::dem
         {DEMO_WEAR_SOCK,     OptimizationTaskConfigurations::demoSock},
         {DEMO_SLOPE_PERF,    OptimizationTaskConfigurations::demoSlope},
         {DEMO_DRESS_TWIRL,   OptimizationTaskConfigurations::demoDress},
-        {DEMO_CLOTH_HANGER,   OptimizationTaskConfigurations::demoHanger},
+        {DEMO_CLOTH_HANGER,  OptimizationTaskConfigurations::demoHanger},
+        {DEMO_MPM_CLOTH,     OptimizationTaskConfigurations::demoMPMCloth},
 };
 
 std::vector<Simulation::SceneConfiguration>  OptimizationTaskConfigurations::sceneConfigArrays = {

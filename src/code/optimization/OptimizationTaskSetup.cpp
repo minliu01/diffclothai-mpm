@@ -201,8 +201,8 @@ void BackwardTaskSolver::setInitialConditions(int demoNum, Simulation *system,
 
     case DEMO_WEAR_HAT:
     case DEMO_WEAR_SOCK:
-    case DEMO_CLOTH_HANGER:
- {
+    case DEMO_CLOTH_HANGER: 
+    case DEMO_MPM_CLOTH: {
       system->setWindAncCollision(false, true, true);
       taskInfo.dL_dcontrolPoints = true;
       resetSplineConfigsForControlTasks(demoNum, system,  paramGroundtruth);

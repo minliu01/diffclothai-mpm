@@ -16,7 +16,10 @@ public:
     static Simulation::SceneConfiguration simpleScene, rotatingSphereScene, windScene, tshirtScene,
             hatScene, sockScene, dressScene, continousNormalScene, slopeSimplifiedScene, hangerScene, towelScene;
 
-    static Simulation::TaskConfiguration demoSphere, demoTshirt, demoWInd, demoHat, demoSock, demoDress, demoWindSim2Real, demoSlope, demoHanger;
+    static Simulation::TaskConfiguration demoSphere, demoTshirt, demoWInd, demoHat, demoSock, demoDress, 
+            demoWindSim2Real, demoSlope, demoHanger,
+            demoMPMCloth;
+            
     static std::vector<Simulation::SceneConfiguration> sceneConfigArrays;
 
     static std::map<int, Simulation::TaskConfiguration> demoNumToConfigMap;

@@ -66,15 +66,16 @@ static std::vector<std::string> windConfigStrings = std::vector<std::string>{"NO
                                                                              "WIND_SIN_AND_FALLOFF",
                                                                              "WIND_FACTOR_PER_STEP"};
 enum Demos {
-    DEMO_WIND, //0
-    DEMO_WIND_TSHIRT, //1
-    DEMO_WIND_SIM2REAL, //2
-    DEMO_WEAR_HAT, // 3
-    DEMO_WEAR_SOCK,//4
-    DEMO_SLOPE_PERF, // 5
-    DEMO_DRESS_TWIRL, // 6
-    DEMO_SPHERE_ROTATE, //7
-    DEMO_CLOTH_HANGER, //8
+    DEMO_WIND,              // 0
+    DEMO_WIND_TSHIRT,       // 1
+    DEMO_WIND_SIM2REAL,     // 2
+    DEMO_WEAR_HAT,          // 3
+    DEMO_WEAR_SOCK,         // 4
+    DEMO_SLOPE_PERF,        // 5
+    DEMO_DRESS_TWIRL,       // 6
+    DEMO_SPHERE_ROTATE,     // 7
+    DEMO_CLOTH_HANGER,      // 8
+    DEMO_MPM_CLOTH,         // 9
 };
 
 static std::vector<std::string> DEMOS_STRINGS = std::vector<std::string>{

@@ -108,7 +108,6 @@ OptimizeHelper BackwardTaskSolver::getOptimizeHelper(Simulation *system, int dem
                       Logging::LogColor::MAGENTA);
   }
 
-
   setLossFunctionInformationAndType(lossType, lossInfo, system, demoNum);
 
 

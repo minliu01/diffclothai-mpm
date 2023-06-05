@@ -1042,7 +1042,7 @@ void Simulation::stepNN(int idx, const VecXd& x,const VecXd& v,const VecXd& fixe
 
 }
 void Simulation::step() {
-   timeSteptimer = Timer();
+  timeSteptimer = Timer();
   timeSteptimer.enabled = true;
   timeSteptimer.ticStart();
   timeSteptimer.tic("init");

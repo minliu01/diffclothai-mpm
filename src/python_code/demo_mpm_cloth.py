@@ -11,13 +11,6 @@ from tqdm import tqdm
 import diffcloth_py as diffcloth
 from src.python_code.pySim.pySim import pySim
 
-def toTorchTensor(x, requriesGrad=False, toDouble=False):
-    torchX = torch.Tensor(x)
-    if toDouble:
-        torchX = torchX.double()
-    torchX = torchX.view(-1).clone().detach().requires_grad_(requriesGrad)
-    return torchX
-
 def get_state(sim: diffcloth.Simulation, to_tensor: bool = False) -> tuple:
     state_info_init = sim.getStateInfo()
     x, v = state_info_init.x, state_info_init.v
@@ -38,6 +31,23 @@ def get_center_pos(
     center_pos = v_pos[torch.LongTensor(corner_idx)].mean(0)
     return center_pos
 
+def forward_sim_no_control(
+    x_i: torch.Tensor,
+    v_i: torch.Tensor,
+    a_t: torch.Tensor,
+    pysim: pySim,
+    steps: int,
+) -> list:
+    """Pure physics simulation."""
+    records = []
+    for step in tqdm(range(steps)):
+        records.append((x_i, v_i))
+        da_t = torch.zeros_like(a_t)
+        a_t += da_t
+        x_i, v_i = pysim(x_i, v_i, a_t)
+    records.append((x_i, v_i))
+    return records
+    
 def forward_sim_targeted_control(
     x_i: torch.Tensor,
     v_i: torch.Tensor,
@@ -131,8 +141,6 @@ def wrap(args, out_fn):
     # Reset the system
     sim.resetSystem()
     x0_t, v0_t, a0_t = get_state(sim, to_tensor=True)
-    print(x0_t.reshape(-1, 3))
-    assert False
 
     control_idx = sim.sceneConfig.customAttachmentVertexIdx[0][1]
     control_x0_t = [x0_t.reshape(-1, 3)[idx] for idx in control_idx]

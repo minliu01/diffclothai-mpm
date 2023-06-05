@@ -11,6 +11,20 @@ from tqdm import tqdm
 import diffcloth_py as diffcloth
 from src.python_code.pySim.pySim import pySim
 
+sceneConfig = {
+    "fabric:k_stiff_stretching": "5500",
+    "fabric:k_stiff_bending": "120",
+    "fabric:name": "remeshed/Wind/wind12x12.obj",
+    "timeStep": "0.01",
+    "stepNum": "200",
+    "forwardConvergenceThresh": "1e-8",
+    "backwardConvergenceThresh": "5e-4",
+    "attachmentPoints": "CUSTOM_ARRAY",
+    "customAttachmentVertexIdx": "0,11",
+    "orientation": "CUSTOM_ORIENTATION",
+    "upVector": "1,2,0"
+}
+
 def get_state(sim: diffcloth.Simulation, to_tensor: bool = False) -> tuple:
     state_info_init = sim.getStateInfo()
     x, v = state_info_init.x, state_info_init.v
@@ -47,7 +61,7 @@ def forward_sim_no_control(
         x_i, v_i = pysim(x_i, v_i, a_t)
     records.append((x_i, v_i))
     return records
-    
+
 def forward_sim_targeted_control(
     x_i: torch.Tensor,
     v_i: torch.Tensor,
@@ -134,7 +148,7 @@ def export_mesh(
 
 def wrap(args, out_fn):
     helper = diffcloth.makeOptimizeHelper(args.task_name)
-    sim = diffcloth.makeSim(exampleName=args.task_name, runBackward=False)
+    sim = diffcloth.makeCustomizedSim(exampleName=args.task_name, runBackward=False, config=sceneConfig)
     sim.forwardConvergenceThreshold = 1e-8
     pysim = pySim(sim, helper, True)
 

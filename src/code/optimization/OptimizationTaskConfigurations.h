@@ -11,7 +11,8 @@
 class OptimizationTaskConfigurations {
 public:
     static Simulation::FabricConfiguration normalFabric6lowres, slopeFabricRestOnPlane, conitnuousNormalTestFabric, 
-            tshirt1000, tie, towel, agenthat579, sock482, dressv7khandsUpDrape, sphereFabric, normalFabric6;
+            tshirt1000, tie, towel, agenthat579, sock482, dressv7khandsUpDrape, sphereFabric, normalFabric6,
+            mpmClothFabric;
 
     static Simulation::SceneConfiguration simpleScene, rotatingSphereScene, windScene, tshirtScene,
             hatScene, sockScene, dressScene, continousNormalScene, slopeSimplifiedScene, hangerScene, towelScene,
@@ -25,8 +26,6 @@ public:
 
     static std::map<int, Simulation::TaskConfiguration> demoNumToConfigMap;
 
-    Simulation::SceneConfiguration OptimizationTaskConfigurations::load_scene_from_config(std::string configPath);
-    
 };
 
 

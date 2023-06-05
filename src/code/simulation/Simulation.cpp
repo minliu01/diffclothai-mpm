@@ -2209,7 +2209,6 @@ void Simulation::createClothMeshFromModel(std::vector<Vec3d> &particleIn, std::v
     restShapeMinDim = Vec3d(0, 0, 0);
   }
 
-
   Vec3d translation = sceneConfig.fabric.keepOriginalScalePoint ? Vec3d(0, 0, 0) : restShapeMaxDim / 2.0;
   restShapeMinDim -= translation;
   restShapeMaxDim -= translation;
@@ -2589,10 +2588,8 @@ void Simulation::createClothMesh() {
     createClothMeshFromModel(modelPoints, modelTris);
 
   } else {
-
     createClothMeshFromConfig();
   }
-
 
   windFallOff = VecXd(3 * particles.size());
   windFallOff.setOnes();

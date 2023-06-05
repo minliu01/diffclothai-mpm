@@ -190,6 +190,21 @@ Simulation::FabricConfiguration OptimizationTaskConfigurations::sock482 = {
 //        .name =  "remeshed/sock482.obj",
 };
 
+Simulation::FabricConfiguration OptimizationTaskConfigurations::mpmClothFabric = {
+        .clothDimX = 6,
+        .clothDimY = 6,
+        .k_stiff_stretching = 5500,
+        .k_stiff_bending = 120,
+        .gridNumX = 40,
+        .gridNumY = 80,
+        .density = 1.0,
+        .keepOriginalScalePoint = false,
+        .isModel = true,
+        .custominitPos = false,
+        .fabricIdx = FabricEnumArray::TSHIRT1000,
+        .color = COLOR_EGGPLANT,
+        .name = "remeshed/Wind/wind12x12.obj",
+};
 
 /* Scene Configuration */
 Simulation::SceneConfiguration OptimizationTaskConfigurations::hatScene = {
@@ -208,7 +223,6 @@ Simulation::SceneConfiguration OptimizationTaskConfigurations::hatScene = {
         .forwardConvergenceThresh = 1e-8,
         .backwardConvergenceThresh = 5e-4,
         .name = "demo_wearhat"
-
 };
 
 Simulation::SceneConfiguration OptimizationTaskConfigurations::continousNormalScene = {
@@ -282,7 +296,6 @@ Simulation::SceneConfiguration OptimizationTaskConfigurations::windScene = {
         .forwardConvergenceThresh = 1e-9,
         .backwardConvergenceThresh = 5e-4,
         .name = "wind"
-
 };
 
 Simulation::SceneConfiguration OptimizationTaskConfigurations::tshirtScene = {
@@ -312,7 +325,6 @@ Simulation::SceneConfiguration OptimizationTaskConfigurations::dressScene = {
                 {0.0, {1335, 1336, 1334, 1360, 1339, 1347, 1345, 1342, 1349, 1351, 1352, 3604, 1145, 1150,
                        1137, 1142, 1143, 1285, 3496, 3497, 3501, 1152, 1153, 3499, 3498, 3500, 3559, 1146, 1333, 1355, 1350,
                 }}
-
         },        //v2 points {{0.0, {2657, 24}}},
         .trajectory = TrajectoryConfigs::TRAJECTORY_DRESS_TWIRL,
         .primitiveConfig = PrimitiveConfiguration::NONE,
@@ -404,10 +416,9 @@ Simulation::SceneConfiguration OptimizationTaskConfigurations::towelScene{
 };
 
 Simulation::SceneConfiguration OptimizationTaskConfigurations::mpmClothScene{
-        .fabric = towel,
+        .fabric = mpmClothFabric,
         .orientation = Orientation::FRONT,
-        .attachmentPoints = AttachmentConfigs::CUSTOM_ARRAY,
-        .customAttachmentVertexIdx = {{0., {0, 11}}},
+        .attachmentPoints = AttachmentConfigs::NO_ATTACHMENTS,
         .trajectory = TrajectoryConfigs::TRAJECTORY_CLOTH_HANGER,
         .primitiveConfig = PrimitiveConfiguration::NONE,
         .windConfig = WindConfig::NO_WIND,
@@ -420,10 +431,6 @@ Simulation::SceneConfiguration OptimizationTaskConfigurations::mpmClothScene{
         .backwardConvergenceThresh = 5e-4,
         .name = "mpm_cloth"
 };
-
-Simulation::SceneConfiguration OptimizationTaskConfigurations::load_scene_from_config(std::string configPath) {
-        
-}
 
 /* Task Configuration */
 Simulation::TaskConfiguration OptimizationTaskConfigurations::demoWindSim2Real = {

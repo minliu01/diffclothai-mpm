@@ -122,7 +122,7 @@ enum FabricEnumArray {
     DRESS_v7k_DRAPE,
     AGENT_HAT579,
     SOCK482,
-    CONTINUOUS_NORMAL_FABRIC
+    CONTINUOUS_NORMAL_FABRIC,
 };
 
 enum SceneConfigArray {

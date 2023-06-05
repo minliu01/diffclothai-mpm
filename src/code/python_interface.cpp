@@ -9,6 +9,86 @@
 
 namespace py = pybind11;
 
+std::map<std::string, std::string> convertDictToSceneConfig(py::dict dictionary) {
+    std::map<std::string, std::string> result;
+    for (std::pair<py::handle, py::handle> item : dictionary) {
+        auto key = item.first.cast<std::string>();
+        auto value = item.second.cast<std::string>();
+        result[key] = value;
+    }
+    return result;
+}
+
+void customize_scene_from_config(Simulation::SceneConfiguration &sceneConfig, const std::map<std::string, std::string> config) {
+    // fabric
+    if (config.find("fabric:k_stiff_stretching") != config.end())
+      sceneConfig.fabric.k_stiff_stretching = std::stod(config.at("fabric:k_stiff_stretching"));
+    if (config.find("fabric:k_stiff_bending") != config.end())
+      sceneConfig.fabric.k_stiff_bending = std::stod(config.at("fabric:k_stiff_bending"));
+    if (config.find("fabric:custominitPos") != config.end()){
+      sceneConfig.fabric.custominitPos = std::stoi(config.at("fabric:custominitPos"));
+      sceneConfig.fabric.initPosFile = config.at("fabric:initPosFile");
+    }
+    if (config.find("fabric:name") != config.end())
+      sceneConfig.name = config.at("fabric:name");
+    // scene
+    if (config.find("timeStep") != config.end())
+      sceneConfig.timeStep = std::stod(config.at("timeStep"));
+    if (config.find("stepNum") != config.end())
+      sceneConfig.stepNum = std::stoi(config.at("stepNum"));
+    if (config.find("forwardConvergenceThresh") != config.end())
+      sceneConfig.forwardConvergenceThresh = std::stod(config.at("forwardConvergenceThresh"));
+    if (config.find("backwardConvergenceThresh") != config.end())
+      sceneConfig.backwardConvergenceThresh = std::stod(config.at("backwardConvergenceThresh"));
+    if (config.find("attachmentPoints") != config.end() && config.at("attachmentPoints") == "CUSTOM_ARRAY") {
+      sceneConfig.attachmentPoints = AttachmentConfigs::CUSTOM_ARRAY;
+      sceneConfig.customAttachmentVertexIdx = {{0.0, {}}};
+      std::stringstream ss(config.at("customAttachmentVertexIdx"));
+      while (ss.good()) {
+        std::string substr;
+        getline(ss, substr, ',');
+        sceneConfig.customAttachmentVertexIdx[0].second.push_back(std::stoi(substr));
+      }
+    }
+    if (config.find("orientation") != config.end()) {
+      if (config.at("orientation") == "FRONT")
+        sceneConfig.orientation = Orientation::FRONT;
+      else if (config.at("orientation") == "DOWN")
+        sceneConfig.orientation = Orientation::DOWN;
+      else if (config.at("orientation") == "BACK")
+        sceneConfig.orientation = Orientation::BACK;
+      else if (config.at("orientation") == "CUSTOM_ORIENTATION"){
+        sceneConfig.orientation = Orientation::CUSTOM_ORIENTATION;
+        sceneConfig.upVector = Vec3d(0,0,0);
+        std::stringstream ss(config.at("upVector"));
+        int idx = 0;
+        while (ss.good() && idx < 3) {
+          std::string substr;
+          getline(ss, substr, ',');
+          sceneConfig.upVector[idx++] = std::stod(substr);
+        }
+      }
+    }
+    return;
+}
+
+Simulation* makeCustomizedSim(std::string exampleName, bool runBackward = true, py::dict config = py::dict()) {
+  Simulation::forwardConvergenceThreshold = 1e-5;
+  Simulation* sim = nullptr;
+  std::map<std::string, std::string> custom_config = convertDictToSceneConfig(config);
+  if (exampleName == "mpm_cloth") {
+    Simulation::SceneConfiguration initSceneProfile = OptimizationTaskConfigurations::mpmClothScene;
+    customize_scene_from_config(initSceneProfile, custom_config);
+    sim = Simulation::createSystem(initSceneProfile, Vec3d(0, 0, 0), runBackward);
+    Vec3d translation = Vec3d(0.8,-1.5,0.);
+    sim->taskLossInfo.targetTranslation = translation;
+  }
+  else {
+    throwError("Undefined example name (" + exampleName + ").");
+  }
+  return sim;
+}
+
 Simulation* makeSim(std::string exampleName, bool runBackward = true) {
   Simulation::forwardConvergenceThreshold = 1e-5;
   Simulation* sim = nullptr;
@@ -31,13 +111,6 @@ Simulation* makeSim(std::string exampleName, bool runBackward = true) {
   } else if (exampleName == "tie") {
     // create simulation instance
     Simulation::SceneConfiguration initSceneProfile = OptimizationTaskConfigurations::hangerScene;
-    sim = Simulation::createSystem(initSceneProfile, Vec3d(0, 0, 0), runBackward);
-    // define loss
-    Vec3d translation = Vec3d(0.8,-1.5,0.);
-    sim->taskLossInfo.targetTranslation = translation;
-  } else if (exampleName == "mpm_cloth") {
-    // create simulation instance
-    Simulation::SceneConfiguration initSceneProfile = OptimizationTaskConfigurations::mpmClothScene;
     sim = Simulation::createSystem(initSceneProfile, Vec3d(0, 0, 0), runBackward);
     // define loss
     Vec3d translation = Vec3d(0.8,-1.5,0.);
@@ -418,6 +491,7 @@ PYBIND11_MODULE(diffcloth_py, m) {
                py::arg("x"))
                ;
 
+  m.def("makeCustomizedSim", &makeCustomizedSim, "initialize a simulation instance", py::arg("exampleName"), py::arg("runBackward") = true, py::arg("config"));
   m.def("makeSim", &makeSim, "initialize a simulation instance", py::arg("exampleName"), py::arg("runBackward") = true);
 
   m.def("makeOptimizeHelper", &makeOptimizeHelper,

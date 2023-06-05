@@ -9,7 +9,7 @@ import torch
 from tqdm import tqdm
 
 import diffcloth_py as diffcloth
-from pySim.pySim import pySim
+from src.python_code.pySim.pySim import pySim
 
 class Bezier:
     def parameterized_two_points(
@@ -269,8 +269,6 @@ def wrap(args, out_fn):
             dir_prefix=f"output/{args.output_dir}",
         )
 
-# TODO 1: adding randomized texture ?
-# TODO 2: is stablizing the scene necessary ?
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("Perturb flat cloth")
     parser.add_argument(

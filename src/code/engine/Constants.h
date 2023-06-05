@@ -101,7 +101,6 @@ enum PrimitiveConfiguration {
     Y0PLANE,
     BIG_SPHERE,
     CLOTH_HANGER,
-    NONE
 };
 
 

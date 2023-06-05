@@ -1,4 +1,4 @@
 torch==1.13.0
-numpy
-tqdm
-IPython
+numpy==1.24.3
+tqdm==4.65.0
+IPython==8.13.2

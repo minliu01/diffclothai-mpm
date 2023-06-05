@@ -14,7 +14,8 @@ public:
             tshirt1000, tie, towel, agenthat579, sock482, dressv7khandsUpDrape, sphereFabric, normalFabric6;
 
     static Simulation::SceneConfiguration simpleScene, rotatingSphereScene, windScene, tshirtScene,
-            hatScene, sockScene, dressScene, continousNormalScene, slopeSimplifiedScene, hangerScene, towelScene;
+            hatScene, sockScene, dressScene, continousNormalScene, slopeSimplifiedScene, hangerScene, towelScene,
+            mpmClothScene;
 
     static Simulation::TaskConfiguration demoSphere, demoTshirt, demoWInd, demoHat, demoSock, demoDress, 
             demoWindSim2Real, demoSlope, demoHanger,
@@ -24,6 +25,8 @@ public:
 
     static std::map<int, Simulation::TaskConfiguration> demoNumToConfigMap;
 
+    Simulation::SceneConfiguration OptimizationTaskConfigurations::load_scene_from_config(std::string configPath);
+    
 };
 
 

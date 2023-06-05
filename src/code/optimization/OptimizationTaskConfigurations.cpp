@@ -403,6 +403,28 @@ Simulation::SceneConfiguration OptimizationTaskConfigurations::towelScene{
         .name = "hang_cloth"
 };
 
+Simulation::SceneConfiguration OptimizationTaskConfigurations::mpmClothScene{
+        .fabric = towel,
+        .orientation = Orientation::FRONT,
+        .attachmentPoints = AttachmentConfigs::CUSTOM_ARRAY,
+        .customAttachmentVertexIdx = {{0., {0, 11}}},
+        .trajectory = TrajectoryConfigs::TRAJECTORY_CLOTH_HANGER,
+        .primitiveConfig = PrimitiveConfiguration::NONE,
+        .windConfig = WindConfig::NO_WIND,
+        .camPos = Vec3d(-22.14, 9.24, 7.59),
+        .camFocusPointType =  CameraFocusPointType::ORIGIN,
+        .sceneBbox =  AABB(Vec3d(-7, -7, -7), Vec3d(7, 7, 7)),
+        .timeStep = 1.0 / 100.0,
+        .stepNum = 200,
+        .forwardConvergenceThresh = 1e-8,
+        .backwardConvergenceThresh = 5e-4,
+        .name = "mpm_cloth"
+};
+
+Simulation::SceneConfiguration OptimizationTaskConfigurations::load_scene_from_config(std::string configPath) {
+        
+}
+
 /* Task Configuration */
 Simulation::TaskConfiguration OptimizationTaskConfigurations::demoWindSim2Real = {
         .scene = windScene,
@@ -470,7 +492,7 @@ Simulation::TaskConfiguration OptimizationTaskConfigurations::demoHanger = {
 };
 
 Simulation::TaskConfiguration OptimizationTaskConfigurations::demoMPMCloth = {
-        .scene = towelScene,
+        .scene = mpmClothScene,
         .hasGroundtruth = false,
         .generateGroundtruthSimulation = false,
         .lossType = LossType::MATCHSHAPE_WITH_TRANSLATION  // TODO：confirm this param

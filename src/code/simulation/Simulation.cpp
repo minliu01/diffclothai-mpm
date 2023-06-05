@@ -2786,7 +2786,7 @@ void Simulation::updateParticleNormals(const VecXd &x_now) {
 Simulation *
 Simulation::createSystem(SceneConfiguration sceneConfig,
                          Vec3d center, bool runBackward) {
-  Logging::logWarning("==========================\nCreating system for demo" + sceneConfig.name);
+  Logging::logWarning("==========================\nCreating system for demo" + sceneConfig.name + "\n");
   checkFolderExistsAndCreate(OUTPUT_PARENT_FOLDER);
   Simulation *msSystem = new Simulation(center);
   msSystem->sceneConfig = sceneConfig;

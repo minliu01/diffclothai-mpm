@@ -23,7 +23,7 @@ int N2 = 1;
 double ret2[100];
 
 double *parse_config2() {
-  std::ifstream infile("/home/ubuntu/DiffCloth/src/code/simulation/config.txt");
+  std::ifstream infile("/home/ubuntu/diffclothai/src/code/simulation/config.txt");
   for (int i = 0; i < N2; i++) {
     char data[100];
     infile >> data;

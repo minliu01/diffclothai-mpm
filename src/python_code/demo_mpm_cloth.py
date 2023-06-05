@@ -11,62 +11,6 @@ from tqdm import tqdm
 import diffcloth_py as diffcloth
 from src.python_code.pySim.pySim import pySim
 
-class Bezier:
-    def parameterized_two_points(
-        self, t: Union[int, float], P1: np.ndarray, P2: np.ndarray
-    ) -> np.ndarray:
-        """Returns a point between P1 and P2, parametised by t."""
-        Q1 = (1 - t) * P1 + t * P2
-        return Q1
-
-    def bezier_points(self, t: Union[int, float], points: np.ndarray) -> list:
-        """Returns a list of points interpolated by the Bezier process."""
-        newpoints = []
-        for i1 in range(0, len(points) - 1):
-            newpoints += [
-                self.parameterized_two_points(t, points[i1], points[i1 + 1])
-            ]
-        return newpoints
-
-    def bezier_point(
-        self, t: Union[int, float], points: np.ndarray
-    ) -> np.ndarray:
-        """Returns a point interpolated by the Bezier process."""
-        newpoints = points
-        while len(newpoints) > 1:
-            newpoints = self.bezier_points(t, newpoints)
-        return newpoints[0]
-
-    def bezier_curve(
-        self, t_values: Union[tuple, list], points: np.ndarray
-    ) -> np.ndarray:
-        """Returns a point interpolated by the Bezier process."""
-        assert len(t_values) > 0, "t_values must contain at least one value."
-        curve = np.array([[0.0] * len(points[0])])
-        for t in t_values:
-            curve = np.append(curve, [self.bezier_point(t, points)], axis=0)
-        curve = np.delete(curve, 0, 0)
-        return curve
-
-
-@contextlib.contextmanager
-def stdout_redirected(to=os.devnull):
-    fd = sys.stdout.fileno()
-
-    def _redirect_stdout(to):
-        sys.stdout.close()  # + implicit flush()
-        os.dup2(to.fileno(), fd)  # fd writes to 'to' file
-        sys.stdout = os.fdopen(fd, "w")  # Python writes to fd
-
-    with os.fdopen(os.dup(fd), "w") as old_stdout:
-        with open(to, "w") as file:
-            _redirect_stdout(to=file)
-        try:
-            yield
-        finally:
-            _redirect_stdout(to=old_stdout)
-
-
 def toTorchTensor(x, requriesGrad=False, toDouble=False):
     torchX = torch.Tensor(x)
     if toDouble:
@@ -74,19 +18,17 @@ def toTorchTensor(x, requriesGrad=False, toDouble=False):
     torchX = torchX.view(-1).clone().detach().requires_grad_(requriesGrad)
     return torchX
 
-
 def get_state(sim: diffcloth.Simulation, to_tensor: bool = False) -> tuple:
     state_info_init = sim.getStateInfo()
     x, v = state_info_init.x, state_info_init.v
     clip_pos = np.array(sim.getStateInfo().x_fixedpoints)
     if to_tensor:
-        x_t = toTorchTensor(x, False, False).clone()
-        v_t = toTorchTensor(v, False, False).clone()
-        a_t = toTorchTensor(clip_pos, False, False).clone()
+        x_t = torch.tensor(x).clone()
+        v_t = torch.tensor(v).clone()
+        a_t = torch.tensor(clip_pos).clone()
         return x_t, v_t, a_t
     else:
         return x, v, clip_pos
-
 
 def get_center_pos(
     sim: diffcloth.Simulation, corner_idx: list = [315, 314, 284, 285]
@@ -96,45 +38,6 @@ def get_center_pos(
     center_pos = v_pos[torch.LongTensor(corner_idx)].mean(0)
     return center_pos
 
-
-def forward_sim_no_control(
-    x_i: torch.Tensor,
-    v_i: torch.Tensor,
-    a_t: torch.Tensor,
-    pysim: pySim,
-    steps: int,
-) -> list:
-    """Pure physics simulation."""
-    records = []
-    for step in tqdm(range(steps)):
-        records.append((x_i, v_i))
-        da_t = torch.zeros_like(a_t)
-        a_t += da_t
-        x_i, v_i = pysim(x_i, v_i, a_t)
-    records.append((x_i, v_i))
-    return records
-
-
-def forward_sim_rand_control(
-    x_i: torch.Tensor,
-    v_i: torch.Tensor,
-    a_t: torch.Tensor,
-    pysim: pySim,
-    steps: int,
-    dilution: float = 0.1,
-    action_repeat: int = 4,
-) -> list:
-    records = []
-    for step in tqdm(range(steps)):
-        records.append((x_i, v_i))
-        da_t = (torch.rand(a_t.shape) - 0.5) * 2 * dilution
-        a_t += da_t
-        for _ in range(action_repeat):
-            x_i, v_i = pysim(x_i, v_i, a_t)
-    records.append((x_i, v_i))
-    return records
-
-
 def forward_sim_targeted_control(
     x_i: torch.Tensor,
     v_i: torch.Tensor,
@@ -143,34 +46,21 @@ def forward_sim_targeted_control(
     pysim: pySim,
     steps: int,
     action_repeat: int = 4,
-    min_height: float = 1,
-    max_height: float = 3,
 ) -> list:
-
     start_pos = a_t.clone().numpy()
     tgt_pos = tgt_pos.numpy()
 
-    mid_pos = start_pos - (tgt_pos - start_pos) / 5
-    for idx in range(int(tgt_pos.shape[0] / 3)):
-        mid_pos[3 * idx + 1] = (
-            start_pos[3 * idx + 1]
-            + (tgt_pos[3 * idx + 1] - start_pos[3 * idx + 1]) * 2 / 3
-        )
-    bezier = Bezier()
-    t_points = np.arange(0, 1, 1.0 / (steps + 3))
-    points = np.array([start_pos, mid_pos, tgt_pos])
-    curve_points = bezier.bezier_curve(t_points, points)
-
     records = []
-    for step in tqdm(range(steps)):
-        points = curve_points[step]
+    for step in range(steps):
+        ratio = (step + 1) / steps
+        point = start_pos + (tgt_pos - start_pos) * ratio
+        a_t = torch.tensor(point).clone()
         records.append((x_i, v_i))
-        a_t = toTorchTensor(points, False, False).clone()
         for _ in range(action_repeat):
             x_i, v_i = pysim(x_i, v_i, a_t)
+
     records.append((x_i, v_i))
     return records
-
 
 def export_mesh(
     sim: diffcloth.Simulation,
@@ -241,16 +131,17 @@ def wrap(args, out_fn):
     # Reset the system
     sim.resetSystem()
     x0_t, v0_t, a0_t = get_state(sim, to_tensor=True)
+    print(x0_t.reshape(-1, 3))
+    assert False
+
     control_idx = sim.sceneConfig.customAttachmentVertexIdx[0][1]
     control_x0_t = [x0_t.reshape(-1, 3)[idx] for idx in control_idx]
     control_tgt = sum(control_x0_t)
     control_tgt[1] += 2
     control_tgt = torch.cat([control_tgt] * len(control_idx))
 
-    # Cloth control
-    # _ = forward_sim_no_control(x0_t, v0_t, a0_t, pysim, 200)
-    # _ = forward_sim_rand_control(x0_t, v0_t, a0_t, pysim, 200)
     _ = forward_sim_targeted_control(x0_t, v0_t, a0_t, control_tgt, pysim, 200)
+
     # Stablise simulation
     x_t, v_t, a_t = get_state(sim, to_tensor=True)
     _ = forward_sim_no_control(x_t, v_t, a_t, pysim, 30)
@@ -277,7 +168,7 @@ if __name__ == "__main__":
     )
     parser.add_argument("--render", "-r", action="store_true")
     parser.add_argument("--save", "-s", action="store_true")
-    parser.add_argument("--task-name", type=str, default="wrap_dough")
+    parser.add_argument("--task-name", type=str, default="mpm_cloth")
     parser.add_argument("--n-openmp-thread", type=int, default=16)
     parser.add_argument("--output-dir", type=str, default="cloth_project/")
     parser.add_argument("--seed", type=int, default=8824325)

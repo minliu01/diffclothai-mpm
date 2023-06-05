@@ -37,7 +37,7 @@ Simulation* makeSim(std::string exampleName, bool runBackward = true) {
     sim->taskLossInfo.targetTranslation = translation;
   } else if (exampleName == "mpm_cloth") {
     // create simulation instance
-    Simulation::SceneConfiguration initSceneProfile = OptimizationTaskConfigurations::hangerScene;
+    Simulation::SceneConfiguration initSceneProfile = OptimizationTaskConfigurations::mpmClothScene;
     sim = Simulation::createSystem(initSceneProfile, Vec3d(0, 0, 0), runBackward);
     // define loss
     Vec3d translation = Vec3d(0.8,-1.5,0.);

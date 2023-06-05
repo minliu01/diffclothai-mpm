@@ -419,7 +419,7 @@ Simulation::SceneConfiguration OptimizationTaskConfigurations::mpmClothScene{
         .fabric = mpmClothFabric,
         .orientation = Orientation::FRONT,
         .attachmentPoints = AttachmentConfigs::NO_ATTACHMENTS,
-        .trajectory = TrajectoryConfigs::TRAJECTORY_CLOTH_HANGER,
+        .trajectory = TrajectoryConfigs::NO_TRAJECTORY,
         .primitiveConfig = PrimitiveConfiguration::NONE,
         .windConfig = WindConfig::NO_WIND,
         .camPos = Vec3d(-22.14, 9.24, 7.59),

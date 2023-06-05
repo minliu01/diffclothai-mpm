@@ -26,11 +26,12 @@ void customize_scene_from_config(Simulation::SceneConfiguration &sceneConfig, co
     if (config.find("fabric:k_stiff_bending") != config.end())
       sceneConfig.fabric.k_stiff_bending = std::stod(config.at("fabric:k_stiff_bending"));
     if (config.find("fabric:custominitPos") != config.end()){
-      sceneConfig.fabric.custominitPos = std::stoi(config.at("fabric:custominitPos"));
-      sceneConfig.fabric.initPosFile = config.at("fabric:initPosFile");
+      sceneConfig.fabric.custominitPos = (config.at("fabric:custominitPos") == "true");
+      if (sceneConfig.fabric.custominitPos)
+        sceneConfig.fabric.initPosFile = config.at("fabric:initPosFile");
     }
     if (config.find("fabric:name") != config.end())
-      sceneConfig.name = config.at("fabric:name");
+      sceneConfig.fabric.name = config.at("fabric:name");
     // scene
     if (config.find("timeStep") != config.end())
       sceneConfig.timeStep = std::stod(config.at("timeStep"));

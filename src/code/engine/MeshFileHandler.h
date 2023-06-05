@@ -17,11 +17,12 @@ public:
       std::vector<Vec3d> pos;
       std::string line;
 
-
-
       std::string inputFolder = std::string(SOURCE_PATH) + "/src/assets/meshes/";
+      std::ifstream f((inputFolder + fileName).c_str());
       std::ostringstream fNameStream;
-      fNameStream << inputFolder << fileName;
+      if(f.good()) fNameStream << inputFolder << fileName;
+      else fNameStream << fileName;
+
       std::printf("Loading pos file from %s...\n", fNameStream.str().c_str());
 
       std::ifstream myfile(fNameStream.str().c_str());

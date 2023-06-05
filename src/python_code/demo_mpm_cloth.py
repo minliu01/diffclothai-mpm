@@ -14,15 +14,17 @@ from src.python_code.pySim.pySim import pySim
 sceneConfig = {
     "fabric:k_stiff_stretching": "5500",
     "fabric:k_stiff_bending": "120",
-    "fabric:name": "remeshed/Wind/wind12x12.obj",
-    "timeStep": "0.01",
+    "fabric:name": "/home/ubuntu/diffclothai/src/assets/meshes/remeshed/Wind/wind12x12.obj",
+    # "fabric:custominitPos": "true",
+    # "fabric:initPosFile": "/home/ubuntu/diffclothai/output/wind12x12_perturbed.txt",
+    "timeStep": "2e-3",
     "stepNum": "200",
     "forwardConvergenceThresh": "1e-8",
     "backwardConvergenceThresh": "5e-4",
     "attachmentPoints": "CUSTOM_ARRAY",
-    "customAttachmentVertexIdx": "0,11",
-    "orientation": "CUSTOM_ORIENTATION",
-    "upVector": "1,2,0"
+    "customAttachmentVertexIdx": "0,11,132,143",
+    # "orientation": "CUSTOM_ORIENTATION",
+    # "upVector": "0,0,1",
 }
 
 def get_state(sim: diffcloth.Simulation, to_tensor: bool = False) -> tuple:
@@ -86,67 +88,12 @@ def forward_sim_targeted_control(
     records.append((x_i, v_i))
     return records
 
-def export_mesh(
-    sim: diffcloth.Simulation,
-    out_fn: str,
-    tmp_fn: str = "untextured.obj",
-    cano_fn: str = "textured_flat_cloth.obj",
-    dir_prefix: str = "output/cloth_project",
-    export_step: int = None,
-    renormalize: bool = False,
-) -> None:
+def export_mesh(sim: diffcloth.Simulation, step: int = None):
+    if step is None:
+        step = (sim.sceneConfig.stepNum - 1,)
+    sim.exportCurrentMeshPos(step, "wind12x12_perturbed")
 
-    if export_step is None:
-        export_step = (sim.sceneConfig.stepNum - 1,)
-    # export to untextured object
-    sim.exportCurrentMeshPos(
-        export_step,
-        f"{dir_prefix}/{tmp_fn}".replace("output/", "").replace(".obj", ""),
-    )
-
-    if renormalize:
-        center_pos = get_center_pos(sim)
-        center_pos[2] = 0.0  # in-plane normalization
-    if os.path.isfile(f"{dir_prefix}/{tmp_fn}"):
-        obj_lines = []
-        with open(f"{dir_prefix}/{cano_fn}", "r") as fp:
-            found_mtl = False
-            cano_vpos_idx = []
-            for i, line in enumerate(fp.readlines()):
-                obj_lines.append(line)
-                if line.startswith("v "):
-                    cano_vpos_idx.append(i)
-                if ".mtl" in line:
-                    found_mtl = True
-        if found_mtl:
-            with open(f"{dir_prefix}/{tmp_fn}", "r") as fp:
-                new_vpos_lines = [
-                    line for line in fp.readlines() if line.startswith("v ")
-                ]
-                assert len(new_vpos_lines) == len(
-                    cano_vpos_idx
-                ), "the numbers of vertices mismatch"
-                for i, line_idx in enumerate(cano_vpos_idx):
-                    if renormalize:
-                        tmp_pos = new_vpos_lines[i].strip().split()[-3:]
-                        pos = [
-                            float(n) - center_pos[i]
-                            for i, n in enumerate(tmp_pos)
-                        ]
-                        new_vpos_lines[i] = f"v {pos[0]} {pos[1]} {pos[2]}\n"
-                    obj_lines[line_idx] = new_vpos_lines[i]
-            with open(f"{dir_prefix}/{out_fn}", "w") as fp:
-                fp.write("".join(obj_lines))
-            print(f"==> Exported textured obj to {dir_prefix}/{out_fn}")
-            os.system(f"rm -f {dir_prefix}/{tmp_fn}")
-            os.system(f"rm -f {dir_prefix}/*.txt")
-        else:
-            print("*********[WARNING]: mtl file not found...*************")
-    else:
-        print("************[ERROR]: in exporting!!!*************")
-
-
-def wrap(args, out_fn):
+def wrap(args):
     helper = diffcloth.makeOptimizeHelper(args.task_name)
     sim = diffcloth.makeCustomizedSim(exampleName=args.task_name, runBackward=False, config=sceneConfig)
     sim.forwardConvergenceThreshold = 1e-8
@@ -159,10 +106,12 @@ def wrap(args, out_fn):
     control_idx = sim.sceneConfig.customAttachmentVertexIdx[0][1]
     control_x0_t = [x0_t.reshape(-1, 3)[idx] for idx in control_idx]
     control_tgt = sum(control_x0_t)
-    control_tgt[1] += 2
+    control_tgt[1] += 2 + 3
     control_tgt = torch.cat([control_tgt] * len(control_idx))
-
+    control_tgt[6:9] = x0_t.reshape(-1, 3)[132]
+    control_tgt[9:12] = x0_t.reshape(-1, 3)[143]
     _ = forward_sim_targeted_control(x0_t, v0_t, a0_t, control_tgt, pysim, 200)
+    # _ = forward_sim_no_control(x0_t, v0_t, a0_t, pysim, 200)
 
     # Stablise simulation
     x_t, v_t, a_t = get_state(sim, to_tensor=True)
@@ -174,13 +123,7 @@ def wrap(args, out_fn):
 
     # Export final configuration into wavefront file
     if args.save:
-        export_mesh(
-            sim,
-            obj_fn,
-            export_step=sim.getStateInfo().stepIdx,
-            renormalize=True,
-            dir_prefix=f"output/{args.output_dir}",
-        )
+        export_mesh(sim, step=sim.getStateInfo().stepIdx)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("Perturb flat cloth")
@@ -200,5 +143,4 @@ if __name__ == "__main__":
     torch.manual_seed(args.seed)
     np.random.seed(args.seed)
 
-    obj_fn = f"perturbed_cloth_{args.mode}.obj"
-    wrap(args, obj_fn)
+    wrap(args)

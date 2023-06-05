@@ -2564,6 +2564,8 @@ void Simulation::createClothMesh() {
   TriangleBending::k_stiff = sceneConfig.fabric.k_stiff_bending;
   if (sceneConfig.fabric.isModel) {
     std::string path = std::string(SOURCE_PATH) + "/src/assets/meshes/" + sceneConfig.fabric.name;
+    std::ifstream f(path.c_str());
+    if(!f.good()) path = sceneConfig.fabric.name;
     modelPoints.clear();
     modelTris.clear();
     MeshFileHandler::loadOBJFile(path.c_str(), modelPoints, modelTris);

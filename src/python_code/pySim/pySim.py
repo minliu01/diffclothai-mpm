@@ -43,3 +43,4 @@ class pySim_cube2cloth(nn.Module):
 
     def forward(self, x: Tensor, v: Tensor, a: Tensor, p_control: Tensor) -> Tuple[Tensor, Tensor]:
         return SimFunction_cube2cloth.apply(x, v, a, p_control, self.cppSim, self.optimizeHelper)
+    

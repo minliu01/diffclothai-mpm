@@ -25,6 +25,8 @@ void customize_scene_from_config(Simulation::SceneConfiguration &sceneConfig, co
       sceneConfig.fabric.k_stiff_stretching = std::stod(config.at("fabric:k_stiff_stretching"));
     if (config.find("fabric:k_stiff_bending") != config.end())
       sceneConfig.fabric.k_stiff_bending = std::stod(config.at("fabric:k_stiff_bending"));
+    if (config.find("fabric:keepOriginalScalePoint") != config.end())
+      sceneConfig.fabric.keepOriginalScalePoint = (config.at("fabric:keepOriginalScalePoint") == "true");
     if (config.find("fabric:custominitPos") != config.end()){
       sceneConfig.fabric.custominitPos = (config.at("fabric:custominitPos") == "true");
       if (sceneConfig.fabric.custominitPos)

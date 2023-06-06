@@ -15,6 +15,7 @@ sceneConfig = {
     "fabric:k_stiff_stretching": "5500",
     "fabric:k_stiff_bending": "120",
     "fabric:name": "/home/ubuntu/diffclothai/src/assets/meshes/remeshed/Wind/wind12x12.obj",
+    "fabric:keepOriginalScalePoint": "true",
     # "fabric:custominitPos": "true",
     # "fabric:initPosFile": "/home/ubuntu/diffclothai/output/wind12x12_perturbed.txt",
     "timeStep": "2e-3",
@@ -102,6 +103,12 @@ def wrap(args):
     # Reset the system
     sim.resetSystem()
     x0_t, v0_t, a0_t = get_state(sim, to_tensor=True)
+
+    x_tmp = x0_t.reshape(-1, 3)
+    print("mean", x_tmp.mean(0))
+    print("max", x_tmp.max(0)[0])
+    print("min", x_tmp.min(0)[0])
+    return
 
     control_idx = sim.sceneConfig.customAttachmentVertexIdx[0][1]
     control_x0_t = [x0_t.reshape(-1, 3)[idx] for idx in control_idx]

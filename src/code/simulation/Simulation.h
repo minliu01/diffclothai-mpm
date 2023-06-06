@@ -129,7 +129,6 @@ public:
         int fabricIdx; // in SimulationConstant::fabricArrays
         Vec3d color;
         std::string name; // if ismodel, this is the path to the mesh model; otherwise describes a fabric
-        double pmass;
     };
 
     struct ParamInfo {

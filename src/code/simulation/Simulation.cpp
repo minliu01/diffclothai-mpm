@@ -2237,8 +2237,7 @@ void Simulation::createClothMeshFromModel(std::vector<Vec3d> &particleIn, std::v
     }
     Vec3d normalizedPos = sceneConfig.fabric.keepOriginalScalePoint ? p : (p - minDim) / scale - restShapeMaxDim;
     int idx = particles.size();
-    double pmass = (sceneConfig.fabric.pmass > 0) ? sceneConfig.fabric.pmass : 1.0;
-    particles.emplace_back(pmass, normalizedPos, normalizedPos,
+    particles.emplace_back(1, normalizedPos, normalizedPos,
                            Vec3d(0, 0, 0), Vec2i(0, 0),
                            idx);
     particleTriangleMap.emplace_back(std::vector<int>());

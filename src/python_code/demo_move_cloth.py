@@ -16,17 +16,18 @@ sceneConfig = {
     "fabric:k_stiff_bending": "120",
     "fabric:name": "/home/ubuntu/diffclothai/src/assets/meshes/remeshed/Wind/wind12x12.obj",
     "fabric:keepOriginalScalePoint": "true",
-    "fabric:pmass": "1",
+    "fabric:density": "1",
     # "fabric:custominitPos": "true",
     # "fabric:initPosFile": "/home/ubuntu/diffclothai/output/wind12x12_perturbed.txt",
-    "timeStep": "2e-3",
+    "timeStep": "1e-2",
     "stepNum": "200",
     "forwardConvergenceThresh": "1e-8",
     "backwardConvergenceThresh": "5e-4",
-    "attachmentPoints": "CUSTOM_ARRAY",
-    "customAttachmentVertexIdx": "0,11",
-    # "orientation": "CUSTOM_ORIENTATION",
-    # "upVector": "0,0,1",
+    # "attachmentPoints": "CUSTOM_ARRAY",
+    # "customAttachmentVertexIdx": "0,11",
+    "orientation": "CUSTOM_ORIENTATION",
+    # "upVector": "0,2,1",
+    "upVector": "0,1,0",
 }
 
 class ClothSimulator:
@@ -71,8 +72,13 @@ def main(args):
     sim = ClothSimulator()
 
     x, v, a = sim.x_init, sim.v_init, sim.a_init
+    f = np.zeros_like(v).reshape(-1, 3)
+    # f[12 * 11: 12 * 12, 1] = 9.8 * 3
+    f = f.reshape(-1)
+
     for i in range(200):
-        x, v = sim.step(x, v, a)
+        x, v = sim.step(x, v, a, f)
+        print(f"#{i}", v[:3])
 
     if args.render:
         sim.render()

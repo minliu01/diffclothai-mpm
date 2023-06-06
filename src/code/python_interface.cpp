@@ -36,8 +36,8 @@ void customize_scene_from_config(Simulation::SceneConfiguration &sceneConfig, co
     }
     if (config.find("fabric:name") != config.end())
       sceneConfig.fabric.name = config.at("fabric:name");
-    if (config.find("fabric:pmass") != config.end())
-      sceneConfig.fabric.pmass = std::stod(config.at("fabric:pmass"));
+    if (config.find("fabric:density") != config.end())
+      sceneConfig.fabric.density = std::stod(config.at("fabric:density"));
     // scene
     if (config.find("timeStep") != config.end())
       sceneConfig.timeStep = std::stod(config.at("timeStep"));

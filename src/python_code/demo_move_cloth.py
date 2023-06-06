@@ -112,6 +112,8 @@ def main(args):
 
     for i in range(200 - 1, -1, -1):
         dL_da, dL_df = sim.step_grad(i)
+    
+    print(dL_df.sum())
 
     if args.render:
         sim.render()

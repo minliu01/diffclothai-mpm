@@ -1724,7 +1724,7 @@ Simulation::stepBackward(Simulation::BackwardTaskInformation &taskInfo, Simulati
     // }
 
     // added by Min for MPM_CLOTH
-    dL_dfext_vec = dL_dvnew * (sceneConfig.timeStep * M_inv);
+    dL_dfext_vec =  sceneConfig.timeStep * dL_dvnew.transpose() * M_inv;
     ret.dL_dfext = dL_dfext_vec;
   }
 

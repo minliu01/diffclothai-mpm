@@ -34,12 +34,15 @@ class ClothSimulator:
     def __init__(self):
         self.config = sceneConfig
         diffcloth.enableOpenMP(n_threads=args.n_openmp_thread)
-        # helper = diffcloth.makeOptimizeHelper(args.task_name)
+        self.helper = diffcloth.makeOptimizeHelper(args.task_name)
         sim = diffcloth.makeCustomizedSim(exampleName=args.task_name, runBackward=False, config=sceneConfig)
         sim.forwardConvergenceThreshold = 1e-8
         self.sim = sim
         self.x_init, self.v_init, self.a_init = self.get_state()
         self.records = [self.sim.getStateInfo(), ]
+
+        self.dL_dx = None
+        self.dL_dv = None
 
     def reset(self):
         self.sim.resetSystem()
@@ -65,6 +68,31 @@ class ClothSimulator:
 
         return x_next, v_next
 
+    def step_grad(self, idx):
+        record = self.records[idx + 1]
+        backRecord = self.sim.stepBackwardNN(
+            self.helper.taskInfo,
+            self.dL_dx,
+            self.dL_dv,
+            record,
+            record.stepIdx == 1, # TODO: check if this should be 0 or 1
+            np.zeros_like(self.dL_dx),
+            np.zeros_like(self.dL_dv))
+
+        self.dL_dx = backRecord.dL_dx
+        self.dL_dv = backRecord.dL_dv
+        dL_dfext = backRecord.dL_dfext
+
+        dL_da_norm = np.linalg.norm(backRecord.dL_dxfixed)
+        if dL_da_norm > 1e-7:
+            maxNorm = 4.0
+            normalized = backRecord.dL_dxfixed * (max(min(backRecord.dL_dxfixed.shape[0] * maxNorm, dL_da_norm), 0.05) / dL_da_norm )
+            dL_da = normalized
+        else:
+            dL_da = backRecord.dL_dxfixed
+
+        return dL_da, dL_dfext
+
     def render(self):
         diffcloth.render(self.sim, renderPosPairs=True, autoExit=True)
 
@@ -78,7 +106,12 @@ def main(args):
 
     for i in range(200):
         x, v = sim.step(x, v, a, f)
-        print(f"#{i}", v[:3])
+
+    sim.dL_dv = np.zeros_like(v)
+    sim.dL_dx = np.zeros_like(x)
+
+    for i in range(200 - 1, -1, -1):
+        dL_da, dL_df = sim.step_grad(i)
 
     if args.render:
         sim.render()

@@ -10,6 +10,7 @@
 namespace py = pybind11;
 
 std::map<std::string, std::string> convertDictToSceneConfig(py::dict dictionary) {
+    // added by Min for MPM_CLOTH
     std::map<std::string, std::string> result;
     for (std::pair<py::handle, py::handle> item : dictionary) {
         auto key = item.first.cast<std::string>();
@@ -20,6 +21,7 @@ std::map<std::string, std::string> convertDictToSceneConfig(py::dict dictionary)
 }
 
 void customize_scene_from_config(Simulation::SceneConfiguration &sceneConfig, const std::map<std::string, std::string> config) {
+    // added by Min for MPM_CLOTH
     // fabric
     if (config.find("fabric:k_stiff_stretching") != config.end())
       sceneConfig.fabric.k_stiff_stretching = std::stod(config.at("fabric:k_stiff_stretching"));
@@ -34,6 +36,8 @@ void customize_scene_from_config(Simulation::SceneConfiguration &sceneConfig, co
     }
     if (config.find("fabric:name") != config.end())
       sceneConfig.fabric.name = config.at("fabric:name");
+    if (config.find("fabric:pmass") != config.end())
+      sceneConfig.fabric.pmass = std::stod(config.at("fabric:pmass"));
     // scene
     if (config.find("timeStep") != config.end())
       sceneConfig.timeStep = std::stod(config.at("timeStep"));
@@ -76,6 +80,7 @@ void customize_scene_from_config(Simulation::SceneConfiguration &sceneConfig, co
 }
 
 Simulation* makeCustomizedSim(std::string exampleName, bool runBackward = true, py::dict config = py::dict()) {
+  // added by Min for MPM_CLOTH
   Simulation::forwardConvergenceThreshold = 1e-5;
   Simulation* sim = nullptr;
   std::map<std::string, std::string> custom_config = convertDictToSceneConfig(config);
@@ -443,6 +448,7 @@ PYBIND11_MODULE(diffcloth_py, m) {
           .def("getCurrentPosVelocityVec", &Simulation::getCurrentPosVelocityVec, "get posvel vecs")
           .def("appendPerStepGradient", &Simulation::appendPerStepGradient, "append grad", py::arg("x"))
           .def("stepNN", &Simulation::stepNN, "forward one step with arg", py::arg("idx"), py::arg("x"), py::arg("v"), py::arg("fixedPointPos"))
+          .def("stepCouple", &Simulation::stepCouple, "forward one step with arg", py::arg("idx"), py::arg("x"), py::arg("v"), py::arg("fixedPointPos"), py::arg("coupleForce"))
           .def("setWindAndCollision", &Simulation::setWindAncCollision, "setWindAndCollision", py::arg("windEnable"), py::arg("collisionEnable"), py::arg("selfCollisionEnable"), py::arg("enableConstantForcefield"))
           .def("getStateInfo", &Simulation::getStateInfo,
                "get the forward info of the current step")

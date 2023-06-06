@@ -97,7 +97,7 @@ Simulation::FabricConfiguration  OptimizationTaskConfigurations::towel = {
         .k_stiff_stretching = 5500,
         .k_stiff_bending = 120, // TODO: change back
         .gridNumX = 40, // 25,
-        .gridNumY = 80, //50,
+        .gridNumY = 80, // 50,
         .density = 1.0,
         .keepOriginalScalePoint = false,
         .isModel = true,
@@ -191,6 +191,7 @@ Simulation::FabricConfiguration OptimizationTaskConfigurations::sock482 = {
 };
 
 Simulation::FabricConfiguration OptimizationTaskConfigurations::mpmClothFabric = {
+        // added by Min for MPM_CLOTH
         .clothDimX = 6,
         .clothDimY = 6,
         .k_stiff_stretching = 5500,
@@ -416,6 +417,7 @@ Simulation::SceneConfiguration OptimizationTaskConfigurations::towelScene{
 };
 
 Simulation::SceneConfiguration OptimizationTaskConfigurations::mpmClothScene{
+        // added by Min for MPM_CLOTH
         .fabric = mpmClothFabric,
         .orientation = Orientation::FRONT,
         .attachmentPoints = AttachmentConfigs::NO_ATTACHMENTS,
@@ -499,6 +501,7 @@ Simulation::TaskConfiguration OptimizationTaskConfigurations::demoHanger = {
 };
 
 Simulation::TaskConfiguration OptimizationTaskConfigurations::demoMPMCloth = {
+        // added by Min for MPM_CLOTH
         .scene = mpmClothScene,
         .hasGroundtruth = false,
         .generateGroundtruthSimulation = false,

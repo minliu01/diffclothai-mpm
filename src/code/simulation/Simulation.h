@@ -129,6 +129,7 @@ public:
         int fabricIdx; // in SimulationConstant::fabricArrays
         Vec3d color;
         std::string name; // if ismodel, this is the path to the mesh model; otherwise describes a fabric
+        double pmass;
     };
 
     struct ParamInfo {
@@ -430,6 +431,7 @@ public:
 
     VecXd s_n; // intertia term defined in PD (Bouazziz 2014)
     VecXd x_n, v_n, gravity_n, external_force_field; // velocity and position from previous solved state / beginning of current timestep
+    VecXd mpm_force; // added by Min for MPM_CLOTH
     VecXd m_primitives, m_primitivesinv; // primitive mass vectors
     SpMat dxnew_dxfixed_rhs, P_inv, I;
     Sphere sphere5, sphere2, sphere_head, sphereForFixedPointRender, veryBigSphere;
@@ -727,6 +729,8 @@ public:
     void step();
 
     void stepNN(int idx, const VecXd &x, const VecXd &v, const VecXd &fixedPointPos);
+
+    void stepCouple(int idx, const VecXd &x, const VecXd &v, const VecXd &fixedPointPos, const VecXd& coupleForce);
 
     void stepPrimitives();
 

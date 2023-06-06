@@ -104,12 +104,6 @@ def wrap(args):
     sim.resetSystem()
     x0_t, v0_t, a0_t = get_state(sim, to_tensor=True)
 
-    x_tmp = x0_t.reshape(-1, 3)
-    print("mean", x_tmp.mean(0))
-    print("max", x_tmp.max(0)[0])
-    print("min", x_tmp.min(0)[0])
-    return
-
     control_idx = sim.sceneConfig.customAttachmentVertexIdx[0][1]
     control_x0_t = [x0_t.reshape(-1, 3)[idx] for idx in control_idx]
     control_tgt = sum(control_x0_t)

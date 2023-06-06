@@ -117,6 +117,8 @@ const double Simulation::fillForces(VecXd &f_int, VecXd &f_ext, const VecXd &v,
       f_i += windf_i;
     }
 
+    if (sceneConfig.name == std::string("mpm_cloth"))
+      f_i += mpm_force.segment(p.idx * 3, 3);
 
     f_ext.segment(p.idx * 3, 3) += f_i;
   }
@@ -1018,6 +1020,14 @@ double Simulation::stepFixPoints(double t) {
   return t_splinefraction;
 }
 
+void Simulation::stepCouple(int idx, const VecXd& x,const VecXd& v,const VecXd& fixedPointPos, const VecXd& coupleForce) {
+
+  mpm_force = coupleForce;
+
+  stepNN(idx, x, v, fixedPointPos);
+
+}
+
 void Simulation::stepNN(int idx, const VecXd& x,const VecXd& v,const VecXd& fixedPointPos) {
 
   sceneConfig.trajectory = TrajectoryConfigs::PER_STEP_TRAJECTORY;
@@ -1041,6 +1051,7 @@ void Simulation::stepNN(int idx, const VecXd& x,const VecXd& v,const VecXd& fixe
   forwardRecords[forwardRecords.size()-1].stepIdx = idx;
 
 }
+
 void Simulation::step() {
   timeSteptimer = Timer();
   timeSteptimer.enabled = true;
@@ -1376,7 +1387,6 @@ void Simulation::step() {
     }
 
 
-
   }
 
 
@@ -1702,16 +1712,20 @@ Simulation::stepBackward(Simulation::BackwardTaskInformation &taskInfo, Simulati
 
 
   if (taskInfo.dL_dfext) {
-    dL_dfext_vec = sceneConfig.timeStep * sceneConfig.timeStep * dr_df_plusI.transpose() * u_star *
-                   forwardInfo_new.windFactor;
-    ret.dL_dfext = gradient_new.dL_dfext;
-    for (int i = 0; i < particles.size(); i++) {
-      Vec3d delta = dL_dfext_vec.segment(i * 3, 3);
-      if (sceneConfig.windConfig == WindConfig::WIND_SIN_AND_FALLOFF) {
-        delta = delta.cwiseProduct(windFallOff.segment(i * 3, 3));
-      }
-      ret.dL_dfext += delta;
-    }
+    // dL_dfext_vec = sceneConfig.timeStep * sceneConfig.timeStep * dr_df_plusI.transpose() * u_star *
+    //                forwardInfo_new.windFactor;
+    // ret.dL_dfext = gradient_new.dL_dfext;
+    // for (int i = 0; i < particles.size(); i++) {
+    //   Vec3d delta = dL_dfext_vec.segment(i * 3, 3);
+    //   if (sceneConfig.windConfig == WindConfig::WIND_SIN_AND_FALLOFF) {
+    //     delta = delta.cwiseProduct(windFallOff.segment(i * 3, 3));
+    //   }
+    //   ret.dL_dfext += delta;
+    // }
+
+    // added by Min for MPM_CLOTH
+    dL_dfext_vec = dL_dvnew * (sceneConfig.timeStep * M_inv);
+    ret.dL_dfext = dL_dfext_vec;
   }
 
 
@@ -2223,7 +2237,8 @@ void Simulation::createClothMeshFromModel(std::vector<Vec3d> &particleIn, std::v
     }
     Vec3d normalizedPos = sceneConfig.fabric.keepOriginalScalePoint ? p : (p - minDim) / scale - restShapeMaxDim;
     int idx = particles.size();
-    particles.emplace_back(1, normalizedPos, normalizedPos,
+    double pmass = (sceneConfig.fabric.pmass > 0) ? sceneConfig.fabric.pmass : 1.0;
+    particles.emplace_back(pmass, normalizedPos, normalizedPos,
                            Vec3d(0, 0, 0), Vec2i(0, 0),
                            idx);
     particleTriangleMap.emplace_back(std::vector<int>());

@@ -79,6 +79,7 @@ class SimFunction(autograd.Function):
         return dL_dx, dL_dv, dL_da, None, None
 
 
+# Code from DiffClothAI
 class SimFunction_cloth2cube(autograd.Function):
 
     @staticmethod

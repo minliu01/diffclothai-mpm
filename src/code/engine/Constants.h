@@ -75,7 +75,7 @@ enum Demos {
     DEMO_DRESS_TWIRL,       // 6
     DEMO_SPHERE_ROTATE,     // 7
     DEMO_CLOTH_HANGER,      // 8
-    DEMO_MPM_CLOTH,         // 9
+    DEMO_MPM_CLOTH,         // 9, added by Min for MPM_CLOTH
 };
 
 static std::vector<std::string> DEMOS_STRINGS = std::vector<std::string>{
@@ -88,7 +88,7 @@ static std::vector<std::string> DEMOS_STRINGS = std::vector<std::string>{
         "DEMO_DRESS_TWIRL0.3",
         "SPHERE", //19
         "CLOTH_HANGER",
-        "MPM_CLOTH",
+        "MPM_CLOTH",    // added by Min for MPM_CLOTH
 };
 
 enum PrimitiveConfiguration {

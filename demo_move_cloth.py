@@ -26,8 +26,7 @@ sceneConfig = {
     # "attachmentPoints": "CUSTOM_ARRAY",
     # "customAttachmentVertexIdx": "0,11",
     "orientation": "CUSTOM_ORIENTATION",
-    # "upVector": "0,2,1",
-    "upVector": "0,1,0",
+    "upVector": "0,2,-1",
 }
 
 class ClothSimulator:
@@ -100,20 +99,33 @@ def main(args):
     sim = ClothSimulator()
 
     x, v, a = sim.x_init, sim.v_init, sim.a_init
-    f = np.zeros_like(v).reshape(-1, 3)
-    # f[12 * 11: 12 * 12, 1] = 9.8 * 3
-    f = f.reshape(-1)
+    # x_tgt = np.copy(x).reshape(-1, 3)
+    # x_tgt[:, 2] += 2.
+    # x_tgt = x_tgt.reshape(-1)
+    x_tgt = np.load("demo_move_cloth_target.npy")
 
-    for i in range(200):
-        x, v = sim.step(x, v, a, f)
+    f = np.zeros((*x.shape, ))
+    f_grad = np.zeros((200, *x.shape))
 
-    sim.dL_dv = np.zeros_like(v)
-    sim.dL_dx = np.zeros_like(x)
+    for epoch in range(15):
+        sim.reset()
+        x, v, a = sim.x_init, sim.v_init, sim.a_init
+        for step in range(200):
+            x, v = sim.step(x, v, a, f)
 
-    for i in range(200 - 1, -1, -1):
-        dL_da, dL_df = sim.step_grad(i)
-    
-    print(dL_df.sum())
+        loss = ((x - x_tgt) ** 2).sum()
+        sim.dL_dv = np.zeros_like(v)
+        sim.dL_dx = np.zeros_like(x)
+        sim.dL_dx = 2 * (x - x_tgt)
+
+        for i in range(200 - 1, -1, -1):
+            dL_da, dL_df = sim.step_grad(i)
+            f_grad[i] = dL_df
+
+        lr = 10. / (epoch + 1)
+        f -= lr * f_grad.mean(0)
+
+        print("Epoch {} | Loss: {:.2f}".format(epoch, loss))
 
     if args.render:
         sim.render()

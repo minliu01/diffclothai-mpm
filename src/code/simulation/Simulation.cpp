@@ -1712,20 +1712,22 @@ Simulation::stepBackward(Simulation::BackwardTaskInformation &taskInfo, Simulati
 
 
   if (taskInfo.dL_dfext) {
-    // dL_dfext_vec = sceneConfig.timeStep * sceneConfig.timeStep * dr_df_plusI.transpose() * u_star *
-    //                forwardInfo_new.windFactor;
-    // ret.dL_dfext = gradient_new.dL_dfext;
-    // for (int i = 0; i < particles.size(); i++) {
-    //   Vec3d delta = dL_dfext_vec.segment(i * 3, 3);
-    //   if (sceneConfig.windConfig == WindConfig::WIND_SIN_AND_FALLOFF) {
-    //     delta = delta.cwiseProduct(windFallOff.segment(i * 3, 3));
-    //   }
-    //   ret.dL_dfext += delta;
-    // }
-
-    // added by Min for MPM_CLOTH
-    dL_dfext_vec =  sceneConfig.timeStep * dL_dvnew.transpose() * M_inv;
-    ret.dL_dfext = dL_dfext_vec;
+    if (sceneConfig.name == std::string("mpm_cloth")) {
+      // added by Min for MPM_CLOTH
+      dL_dfext_vec =  sceneConfig.timeStep * dL_dvnew.transpose() * M_inv;
+      ret.dL_dfext = dL_dfext_vec;
+    } else {
+      dL_dfext_vec = sceneConfig.timeStep * sceneConfig.timeStep * dr_df_plusI.transpose() * u_star *
+                     forwardInfo_new.windFactor;
+      ret.dL_dfext = gradient_new.dL_dfext;
+      for (int i = 0; i < particles.size(); i++) {
+        Vec3d delta = dL_dfext_vec.segment(i * 3, 3);
+        if (sceneConfig.windConfig == WindConfig::WIND_SIN_AND_FALLOFF) {
+          delta = delta.cwiseProduct(windFallOff.segment(i * 3, 3));
+        }
+        ret.dL_dfext += delta;
+      }
+    }
   }
 
 

@@ -34,7 +34,7 @@ class ClothSimulator:
         self.config = sceneConfig
         diffcloth.enableOpenMP(n_threads=args.n_openmp_thread)
         self.helper = diffcloth.makeOptimizeHelper(args.task_name)
-        sim = diffcloth.makeCustomizedSim(exampleName=args.task_name, runBackward=False, config=sceneConfig)
+        sim = diffcloth.makeCustomizedSim(exampleName=args.task_name, runBackward=True, config=sceneConfig)
         sim.forwardConvergenceThreshold = 1e-8
         self.sim = sim
         self.x_init, self.v_init, self.a_init = self.get_state()

@@ -3,6 +3,7 @@ import contextlib
 import os
 import sys
 from typing import Union
+import time
 
 import numpy as np
 import torch
@@ -12,14 +13,17 @@ import diffcloth_py as diffcloth
 from src.python_code.pySim.pySim import pySim
 
 sceneConfig = {
-    "fabric:k_stiff_stretching": "5500",
-    "fabric:k_stiff_bending": "120",
-    "fabric:name": "/home/ubuntu/diffclothai/src/assets/meshes/remeshed/Wind/wind12x12.obj",
+    # "fabric:k_stiff_stretching": "5500",
+    # "fabric:k_stiff_bending": "120",
+    "fabric:k_stiff_stretching": "0.8",
+    "fabric:k_stiff_bending": "0.03",
+    "fabric:name": "/home/ubuntu/MPM_CLOTH/envs/assets/towel/towel.obj",
+    # "fabric:name": "/home/ubuntu/diffclothai/src/assets/meshes/remeshed/Wind/wind12x12.obj",
     "fabric:keepOriginalScalePoint": "true",
     "fabric:density": "1",
     # "fabric:custominitPos": "true",
     # "fabric:initPosFile": "/home/ubuntu/diffclothai/output/wind12x12_perturbed.txt",
-    "timeStep": "1e-2",
+    "timeStep": "2e-3",
     "stepNum": "200",
     "forwardConvergenceThresh": "1e-8",
     "backwardConvergenceThresh": "5e-4",
@@ -102,14 +106,16 @@ def main(args):
     # x_tgt = np.copy(x).reshape(-1, 3)
     # x_tgt[:, 2] += 2.
     # x_tgt = x_tgt.reshape(-1)
-    x_tgt = np.load("demo_move_cloth_target.npy")
+    x_tgt = np.load("demo_move_cloth_target_small.npy")
 
     f = np.zeros((*x.shape, ))
     f_grad = np.zeros((200, *x.shape))
 
-    for epoch in range(15):
+    for epoch in range(args.epochs):
+        tik = time.time()
         sim.reset()
         x, v, a = sim.x_init, sim.v_init, sim.a_init
+
         for step in range(200):
             x, v = sim.step(x, v, a, f)
 
@@ -122,10 +128,10 @@ def main(args):
             dL_da, dL_df = sim.step_grad(i)
             f_grad[i] = dL_df
 
-        lr = 10. / (epoch + 1)
+        lr = args.lr / (epoch + 1)
         f -= lr * f_grad.mean(0)
-
-        print("Epoch {} | Loss: {:.2f}".format(epoch, loss))
+        tok = time.time()
+        print("Epoch {} | Loss: {:.2f} | Time: {:.2f}".format(epoch, loss, tok-tik))
 
     if args.render:
         sim.render()
@@ -142,6 +148,8 @@ if __name__ == "__main__":
     parser.add_argument("--n-openmp-thread", type=int, default=16)
     parser.add_argument("--output-dir", type=str, default="cloth_project/")
     parser.add_argument("--seed", type=int, default=8824325)
+    parser.add_argument("--epochs", type=int, default=15)
+    parser.add_argument("--lr", type=float, default=0.01)
     args = parser.parse_args()
     
     torch.manual_seed(args.seed)

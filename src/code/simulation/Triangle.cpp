@@ -629,11 +629,11 @@ Triangle::Triangle(int p0_idx, int p1_idx, int p2_idx, std::vector<Particle> &pA
   deltaUV = P.transpose() * edgeVec;
   inv_deltaUV = deltaUV.inverse(); // == rest
   area_rest = std::abs(deltaUV.determinant() * 0.5);
-  if (checkArea) {
-    if (area_rest < 0.001) {
-      std::printf("WARNING: MESH TOPOLOGY: Triangle (%d, %d, %d) has area %.4f\n", p0_idx, p1_idx, p2_idx, area_rest);
-    }
-  }
+  // if (checkArea) {                               # removed by Min for MPM_CLOTH
+  //   if (area_rest < 0.001) {
+  //     std::printf("WARNING: MESH TOPOLOGY: Triangle (%d, %d, %d) has area %.4f\n", p0_idx, p1_idx, p2_idx, area_rest);
+  //   }
+  // }
 
 
   Mat2x3d p;

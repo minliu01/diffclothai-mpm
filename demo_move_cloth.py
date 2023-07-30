@@ -15,7 +15,7 @@ from src.python_code.pySim.pySim import pySim
 sceneConfig = {
     # "fabric:k_stiff_stretching": "5500",
     # "fabric:k_stiff_bending": "120",
-    "fabric:k_stiff_stretching": "0.8",
+    "fabric:k_stiff_stretching": "1000",
     "fabric:k_stiff_bending": "0.03",
     "fabric:name": "/home/ubuntu/MPM_CLOTH/envs/assets/towel/towel.obj",
     # "fabric:name": "/home/ubuntu/diffclothai/src/assets/meshes/remeshed/Wind/wind12x12.obj",
@@ -149,7 +149,7 @@ if __name__ == "__main__":
     parser.add_argument("--output-dir", type=str, default="cloth_project/")
     parser.add_argument("--seed", type=int, default=8824325)
     parser.add_argument("--epochs", type=int, default=15)
-    parser.add_argument("--lr", type=float, default=0.01)
+    parser.add_argument("--lr", type=float, default=0.05)
     args = parser.parse_args()
     
     torch.manual_seed(args.seed)

@@ -298,6 +298,7 @@ public:
         double forwardConvergenceThresh;
         double backwardConvergenceThresh;
         std::string name;
+        Vec3d gravity;                      // added my Min Liu for MPM_CLOTH
     };
 
     struct TaskConfiguration {
@@ -516,7 +517,7 @@ public:
       sceneConfig.primitiveConfig = PrimitiveConfiguration::PLANE_AND_SPHERE;
       sceneConfig.timeStep = 1.0 / 60;
       sceneConfig.stepNum = 100;
-
+      sceneConfig.gravity = Vec3d(0, -9.8, 0);
 
     }
 

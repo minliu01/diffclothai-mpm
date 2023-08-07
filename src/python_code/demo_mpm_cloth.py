@@ -14,7 +14,7 @@ from src.python_code.pySim.pySim import pySim
 sceneConfig = {
     "fabric:k_stiff_stretching": "5500",
     "fabric:k_stiff_bending": "120",
-    "fabric:name": "/home/ubuntu/diffclothai/src/assets/meshes/remeshed/Wind/wind12x12.obj",
+    "fabric:name": "/home/ubuntu/diffcloth/src/assets/meshes/remeshed/Wind/wind12x12.obj",
     "fabric:keepOriginalScalePoint": "true",
     # "fabric:custominitPos": "true",
     # "fabric:initPosFile": "/home/ubuntu/diffclothai/output/wind12x12_perturbed.txt",

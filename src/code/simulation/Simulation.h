@@ -480,7 +480,7 @@ public:
             rightLeg(Vec3d(0, 0, 0), Vec3d(0, 1, -0.3), 5, 4),
             leftLeg(Vec3d(0, 0, 0), Vec3d(0, 1, -0.3), 5, 4),
             hanger(Vec3d(0, 0, 0), 0.05, 1, 0.05, 0.05, 0.5),
-            cube1m(Vec3d(0, 0, 0), 1., "/home/ubuntu/diffclothai/src/assets/meshes/remeshed/Hanger/cube.obj"),
+            cube1m(Vec3d(0, 0, 0), 1., "/home/ubuntu/diffcloth/src/assets/meshes/remeshed/Hanger/cube.obj"),
             hanger1(Vec3d(0, 0, 0), 0.5, 0.5, 0.5),
             cube1(Vec3d(0, 0, 0), 0.05, 0.3, 0.05),
             cube2(Vec3d(0, 0, 0), 0.05, 0.05, 0.15),

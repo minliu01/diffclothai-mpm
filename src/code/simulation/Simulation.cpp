@@ -106,7 +106,7 @@ const double Simulation::fillForces(VecXd &f_int, VecXd &f_ext, const VecXd &v,
     Particle &p = particles[i];
     Vec3d f_i(0, 0, 0);
     if (gravityEnabled)
-      f_i += sceneConfig.gravity * p.mass;
+      f_i += gravity * p.mass;
 
     if (windEnabled) {
       Vec3d windf_i = (wind * windNorm * windFactor);
